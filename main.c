@@ -41,8 +41,8 @@ int main(){
 
     fp = fopen("log.txt", "w");
 
-    // set_led(1, 200,100,50);
-    // set_led(2, 100,200,50);
+    set_led(1, 100,100,100);
+    set_led(2, 100,100,100);
 
     uint16_t nn, s;
     uint32_t rgb_knobs_value;
@@ -66,15 +66,18 @@ int main(){
         nn++;
 
         if ( gb > 0) {
-            set_led(1, 200,100,50);
+            set_led(1, (unsigned char)rk, (unsigned char)gk, (unsigned char)bk);
             s = 1;
         } else {
             if (s == 1) {
-                set_led(1, 0,0,0);
+                set_led(1, 0, 0, 0);
                 s = 0;
             }
         }
     }
+
+    set_led(1, 0, 0, 0);
+    set_led(2, 0, 0, 0);
 
     fclose(fp);
     return 0;
