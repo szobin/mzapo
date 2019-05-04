@@ -92,6 +92,12 @@ void draw_lcd(uint16_t r, uint16_t c, int ch) {
 
 }
 
+void draw_lcd2() {
+  for (int j=0; j<lcd_cols; j++) {
+    *(volatile uint16_t*)(parlcd_mem_base + PARLCD_REG_CMD_o + j) = 0x2c;
+  }  
+}
+
 
 void main_cycle() {
     uint16_t nn, s;
@@ -113,7 +119,7 @@ void main_cycle() {
         rb = (rgb_knobs_value>>26) & 1;    // red button
 
         if ((rb > 0) && (gb > 0)) {
-          draw_lcd(0, 0, 'Q');
+          draw_lcd2();
           quit = 1;
           fprintf(fp, "quit");
         }
