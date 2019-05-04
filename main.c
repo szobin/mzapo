@@ -44,8 +44,8 @@ int init_lcd() {
 void clear_lcd() {
   for (int j=0; j<lcd_rows; j++) {
     for (int i=0; i<lcd_cols; i++) {
-      parlcd_write_cmd(0x2c + i);
-      parlcd_write_data(0x00);
+      parlcd_write_cmd(parlcd_mem_base, 0x2c + i);
+      parlcd_write_data(parlcd_mem_base, 0x00);
     }  
   }
 }
@@ -91,11 +91,11 @@ void draw_lcd(uint16_t r, uint16_t c, int ch) {
     for (int i=0; i<16; i++) {
         fmap = rom8x16_bits[ch*16+i];
         for (int j=0; j<8; j++) {
-          parlcd_write_cmd(0x2c + p + j + ofs);
+          parlcd_write_cmd(parlcd_mem_base, 0x2c + p + j + ofs);
           if ((fmap & 0x01) == 0) {
-            parlcd_write_data(0x00);
+            parlcd_write_data(parlcd_mem_base, 0x00);
           } else {                                               
-            parlcd_write_data(0xFFFF);
+            parlcd_write_data(parlcd_mem_base, 0xFFFF);
           }
           fmap = fmap << 1;
         }
