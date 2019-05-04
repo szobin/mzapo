@@ -118,7 +118,7 @@ void main_cycle() {
           fprintf(fp, "quit");
         }
 
-        if (bb+gb+rb > 0) {
+        if ((bb+gb+rb > 0) && (s == 0)) {
            nn++;
 
            if ( bb > 0) {
