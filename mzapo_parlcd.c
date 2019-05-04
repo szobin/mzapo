@@ -13,6 +13,7 @@
  *******************************************************************/
 
 #define _POSIX_C_SOURCE 200112L
+#define HX8357_B
 
 #include <stdint.h>
 #include <time.h>
