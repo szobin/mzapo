@@ -11,7 +11,7 @@
 unsigned char *mem_base;
 unsigned char *parlcd_mem_base;
 
-// uint16_t lcd_rows = 480;
+uint16_t lcd_rows = 480;
 uint16_t lcd_cols = 320;
 
 FILE *fp;
@@ -41,9 +41,19 @@ int init_lcd() {
     return 0;
 }
 
+void clear_lcd() {
+  for (int j=0; j<lcd_rows; j++) {
+    for (int i=0; i<lcd_cols; i++) {
+      *(volatile uint16_t*)(parlcd_mem_base + PARLCD_REG_CMD_o + i + j*lcd_cols) = 0x00;
+    }  
+  }
+}
+
+
 void clear_dev() {
     clear_32_leds();	
     clear_rgb_leds();
+    clear_lcd();
     fprintf(fp, "-device clear OK\n");
 }
 
@@ -97,7 +107,6 @@ void draw_lcd2() {
     *(volatile uint16_t*)(parlcd_mem_base + PARLCD_REG_CMD_o + j) = 0x2c;
   }  
 }
-
 
 void main_cycle() {
     uint16_t nn, s;
