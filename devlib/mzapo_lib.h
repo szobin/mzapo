@@ -9,8 +9,6 @@ unsigned char *parlcd_mem_base;
 const uint16_t lcd_cols = 480;
 const uint16_t lcd_rows = 320;
 
-uint16_t lcd_map[lcd_rows][lcd_cols];
-
 FILE *fp;
 
 int init_dev();
@@ -29,9 +27,9 @@ void set_rgb_led(int led, unsigned char r, unsigned char g, unsigned char b);
 uint32_t read_knobs_value();
 
 
-void draw_lcd(uint16_t map[lcd_rows][lcd_cols]);
-void fill_map(uint16_t map[lcd_rows][lcd_cols]);
+void draw_lcd();
+void fill_map();
 
-void fill_font_text(uint16_t map[lcd_rows][lcd_cols], int x, int y, char *text);
+void fill_font_text(int x, int y, char *text);
 
-#endif /*MZAPO_LIB_H*/
+#endif /* MZAPO_LIB_H */

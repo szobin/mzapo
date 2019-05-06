@@ -9,6 +9,7 @@
 #include "font_types.h"
 #include "font_rom8x16.c"
 
+uint16_t lcd_map[lcd_rows][lcd_cols];
 
 void clear_32_leds() {
   *(volatile uint32_t*)(mem_base + SPILED_REG_LED_LINE_o) = 0x00000000;
@@ -77,20 +78,20 @@ uint32_t read_knobs_value() {
     return  *(volatile uint32_t *) (mem_base + SPILED_REG_KNOBS_8BIT_o);
 }
 
-void draw_lcd(uint16_t map[lcd_rows][lcd_cols]) {
+void draw_lcd() {
     parlcd_write_cmd(parlcd_mem_base, 0x2c);
     for (int i=0; i<lcd_rows; i++) {
         for (int j=0; j<lcd_cols; j++) {
-           parlcd_write_data(parlcd_mem_base, map[i][j]);
+           parlcd_write_data(parlcd_mem_base, lcd_map[i][j]);
         }
     }
 
 }
 
-void fill_map(uint16_t map[lcd_rows][lcd_cols]) {
+void fill_map() {
     for (int i=0; i<lcd_rows; i++) {
         for (int j=0; j<lcd_cols; j++) {
-            map[i][j] = (uint16_t)j;
+            lcd_map[i][j] = (uint16_t)j;
         }
     }
 }
@@ -99,7 +100,7 @@ const uint16_t font_height = 16;
 const uint16_t font_width = 8;
 const uint16_t font_color = 0xffff; // black
 
-void fill_font_text(uint16_t map[lcd_rows][lcd_cols], int x, int y, char *text) {
+void fill_font_text(int x, int y, char *text) {
    size_t l = strlen(text);
    int ch;
    uint16_t m;
@@ -110,7 +111,7 @@ void fill_font_text(uint16_t map[lcd_rows][lcd_cols], int x, int y, char *text) 
           for (int c = 0; c> font_width; c++) {
              m <<= 01;
              if ((m & 0x01) > 0 ) {
-                 map[y+r][x+c+k*(font_width+1)] = font_color;
+                 lcd_map[y+r][x+c+k*(font_width+1)] = font_color;
              }
           }
 

@@ -9,8 +9,9 @@ void main_cycle() {
     int rk, gk, bk, rb, gb, bb;
 
     nn = 0; s = 0;
-    fill_map(lcd_map);
-    draw_lcd(lcd_map);
+    fill_map();
+    fill_font_text(10, 10, "TEST");
+    draw_lcd();
 
     while(1) {
         rgb_knobs_value = read_knobs_value();
@@ -69,8 +70,6 @@ int main(){
       return(1);
     }
     fprintf(fp, "-device init OK\n");
-
-    fill_font_text(lcd_map, 10, 10, "TEST");
 
     main_cycle();
 
