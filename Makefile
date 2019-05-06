@@ -26,7 +26,7 @@ OBJEXT = o
 SRCDIR = devlib
 BUILDDIR = 
 
-OBJECTS += $(filter %.o,$(SOURCES:%.c=%.o))
+# OBJECTS += $(filter %.o,$(SOURCES:%.c=%.o))
 OBJECTS += $(wildcard *.o)
 # OBJECTS += $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
 # OBJECTS += $(filter %.o,$(SOURCES:%.cpp=%.o))
