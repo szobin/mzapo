@@ -21,8 +21,15 @@ TARGET_USER ?= root
 # for use from Eduroam network use TARGET_IP=localhost and enable next line
 #SSH_OPTIONS=-o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -o "Port=2222"
 
+SRCEXT = c
+OBJEXT = o
+SRCDIR = devlib
+BUILDDIR = 
+
 OBJECTS += $(filter %.o,$(SOURCES:%.c=%.o))
-OBJECTS += $(filter %.o,$(SOURCES:%.cpp=%.o))
+OBJECTS += $(wildcard *.o)
+# OBJECTS += $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
+# OBJECTS += $(filter %.o,$(SOURCES:%.cpp=%.o))
 
 #$(warning OBJECTS=$(OBJECTS))
 
