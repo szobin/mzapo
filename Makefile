@@ -27,7 +27,7 @@ SRCDIR = devlib
 BUILDDIR = 
 
 OBJECTS += main.o mzapo_lib.o mzapo_phys.o mzapo_parlcd.o
-OBJECTS += font_prop14x16.o font_rom8x16.o
+# OBJECTS += font_prop14x16.o font_rom8x16.o
 # OBJECTS += $(filter %.o,$(SOURCES:%.c=%.o))
 # OBJECTS += $(wildcard *.o)
 # OBJECTS += $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
