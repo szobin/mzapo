@@ -6,9 +6,6 @@
 unsigned char *mem_base;
 unsigned char *parlcd_mem_base;
 
-const uint16_t lcd_cols = 480;
-const uint16_t lcd_rows = 320;
-
 FILE *fp;
 
 int init_dev();

@@ -9,6 +9,9 @@
 #include "font_types.h"
 #include "font_rom8x16.c"
 
+#define lcd_cols 480
+#define lcd_rows 320
+
 uint16_t lcd_map[lcd_rows][lcd_cols];
 
 void clear_32_leds() {
