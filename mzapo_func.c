@@ -188,13 +188,18 @@ void draw_stop_lcd_map() {
     draw_lcd();
 }
 
+void set_rgb_led_logged((int led, unsigned char r, unsigned char g, unsigned char b) {
+   fprintf(fp, "-set-RGB-LED %i: %i %i %i \n", led, r, g, b);
+
+   set_rgb_led(led, r, g, b);
+}
 
 void set_led_settings() {
-    set_rgb_led(1,
+    set_rgb_led_logged(1,
             get_led_red(settings.color_led_1),
             get_led_green(settings.color_led_1),
             get_led_blue(settings.color_led_1));
-    set_rgb_led(2,
+    set_rgb_led_logged(2,
             get_led_red(settings.color_led_2),
             get_led_green(settings.color_led_2),
             get_led_blue(settings.color_led_2));
