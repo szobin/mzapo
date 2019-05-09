@@ -20,7 +20,8 @@ const uint16_t clLtRed   = 0x8000;
 
 const uint16_t font_height = 16;
 const uint16_t font_width = 8;
-const uint16_t test_colors[8] = {clWhite, clRed, clGreen, clBlue, clBlack, clLtRed, clLtGreen, clSky};
+
+uint16_t test_colors[8] = {clWhite, clRed, clGreen, clBlue, clBlack, clLtRed, clLtGreen, clSky};
 
 typedef struct {
     uint16_t color_led_1;
