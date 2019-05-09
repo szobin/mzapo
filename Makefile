@@ -7,7 +7,7 @@ CXXFLAGS = -g -std=gnu++11 -O1 -Wall
 LDFLAGS = -lrt -lpthread
 
 SOURCES = main.c devlib/mzapo_lib.c devlib/mzapo_phys.c devlib/mzapo_parlcd.c
-SOURCES += devlib/font_prop14x16.c devlib/font_rom8x16.c
+# SOURCES += devlib/font_prop14x16.c devlib/font_rom8x16.c
 
 TARGET_EXE = mzapo
 #TARGET_IP ?= 192.168.202.209

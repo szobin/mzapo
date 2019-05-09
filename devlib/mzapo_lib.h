@@ -8,6 +8,13 @@ unsigned char *parlcd_mem_base;
 
 FILE *fp;
 
+#define lcd_cols 480
+#define lcd_rows 320
+
+uint16_t lcd_map[lcd_rows][lcd_cols];
+
+void delay(int ms);
+
 int init_dev();
 void clear_dev();
 
