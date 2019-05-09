@@ -16,9 +16,6 @@ const uint16_t clSky     = 0x0010;
 const uint16_t clLtGreen = 0x0400;
 const uint16_t clLtRed   = 0x8000;
 
-const uint16_t font_height = 16;
-const uint16_t font_width = 8;
-
 typedef struct {
     uint16_t color_led_1;
     uint16_t color_led_2;

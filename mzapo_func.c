@@ -6,6 +6,8 @@
 #include "mzapo_lib.h"
 #include "mzapo_func.h"
 
+const uint16_t font_height = 16;
+const uint16_t font_width = 8;
 
 unsigned char get_led_red(uint16_t color) {
     return (unsigned char)((color & 0xF800) >> 8);
