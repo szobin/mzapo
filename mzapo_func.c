@@ -2,8 +2,8 @@
 #include <string.h>
 #include <stdint.h>
 
-#include "../devlib/font_rom8x16.c"
-#include "../devlib/mzapo_lib.h"
+#include "font_rom8x16.c"
+#include "mzapo_lib.h"
 #include "mzapo_func.h"
 
 
