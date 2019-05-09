@@ -1,6 +1,7 @@
 #include <stdio.h>
 
-#include "proglib/mzapo_func.c"
+#include "proglib/mzapo_func.h"
+#include "devlib/mzapo_lib.h"
 
 int main(){
     fp = fopen("log.txt", "w");

@@ -6,7 +6,7 @@ CFLAGS =-g -std=gnu99 -O1 -Wall
 CXXFLAGS = -g -std=gnu++11 -O1 -Wall
 LDFLAGS = -lrt -lpthread
 
-SOURCES = main.c devlib/mzapo_lib.c devlib/mzapo_phys.c devlib/mzapo_parlcd.c
+SOURCES = main.c proglib/mzapo_func.c devlib/mzapo_lib.c devlib/mzapo_phys.c devlib/mzapo_parlcd.c
 # SOURCES += devlib/font_prop14x16.c devlib/font_rom8x16.c
 
 TARGET_EXE = mzapo
@@ -26,7 +26,7 @@ OBJEXT = o
 SRCDIR = devlib
 BUILDDIR = 
 
-OBJECTS += main.o mzapo_lib.o mzapo_phys.o mzapo_parlcd.o
+OBJECTS += main.o mzapo_func.o mzapo_lib.o mzapo_phys.o mzapo_parlcd.o
 # OBJECTS += font_prop14x16.o font_rom8x16.o
 # OBJECTS += $(filter %.o,$(SOURCES:%.c=%.o))
 # OBJECTS += $(wildcard *.o)

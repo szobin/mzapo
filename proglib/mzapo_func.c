@@ -4,31 +4,8 @@
 
 #include "../devlib/font_rom8x16.c"
 #include "../devlib/mzapo_lib.h"
+#include "mzapo_func.h"
 
-
-const uint16_t clWhite = 0x0000;
-const uint16_t clBlack = 0xffff;
-const uint16_t clGray  = 0x8410;
-
-const uint16_t clBlue  = 0x001f;
-const uint16_t clGreen = 0x07e0;
-const uint16_t clRed   = 0xf800;
-
-const uint16_t clSky     = 0x0010;
-const uint16_t clLtGreen = 0x0400;
-const uint16_t clLtRed   = 0x8000;
-
-const uint16_t font_height = 16;
-const uint16_t font_width = 8;
-
-typedef struct {
-    uint16_t color_led_1;
-    uint16_t color_led_2;
-    uint16_t menu_screen;
-    uint16_t menu_settings_leds;
-} ledSettings;
-
-ledSettings settings;
 
 unsigned char get_led_red(uint16_t color) {
     return (unsigned char)((color & 0xF800) >> 8);
