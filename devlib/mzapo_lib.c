@@ -1,13 +1,10 @@
 #include <stdio.h>
-#include <string.h>
 #include <stdint.h>
 
 #include "mzapo_lib.h"
 #include "mzapo_regs.h"
 #include "mzapo_phys.h"
 #include "mzapo_parlcd.h"
-#include "font_types.h"
-#include "font_rom8x16.c"
 
 
 void delay(int ms) {
@@ -89,37 +86,4 @@ void draw_lcd() {
         }
     }
 
-}
-
-void fill_map() {
-    for (int i=0; i<lcd_rows; i++) {
-        for (int j=0; j<lcd_cols; j++) {
-            lcd_map[i][j] = (uint16_t)j;
-        }
-    }
-}
-
-const uint16_t font_height = 16;
-const uint16_t font_width = 8;
-const uint16_t font_color = 0xffff; // black
-
-void fill_font_text(int x, int y, char *text) {
-   size_t l = strlen(text);
-   int ch;
-   uint16_t m, fm;
-   for (int k=0; k<l; k++) {
-       ch = text[k];
-       for (int r = 0; r < font_height; r++) {
-          m = rom8x16_bits[r+ch*font_height];
-          fm = 0x8000;
-          if (m != 0)
-            for (int c = 0; c < font_width; c++) {
-                if ((m & fm) > 0 ) {
-                     lcd_map[y+r][x+c+k*(font_width+1)] = font_color;
-                }
-                fm >>= 01;
-            }
-
-       }
-   }
 }

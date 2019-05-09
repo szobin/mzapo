@@ -18,7 +18,6 @@ void delay(int ms);
 int init_dev();
 void clear_dev();
 
-
 void clear_32_leds();
 void clear_rgb_leds();
 
@@ -31,6 +30,5 @@ void set_rgb_led(int led, unsigned char r, unsigned char g, unsigned char b);
 uint32_t read_knobs_value();
 
 void draw_lcd();
-
 
 #endif /* MZAPO_LIB_H */
