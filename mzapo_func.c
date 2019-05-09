@@ -188,7 +188,7 @@ void draw_stop_lcd_map() {
     draw_lcd();
 }
 
-void set_rgb_led_logged((int led, unsigned char r, unsigned char g, unsigned char b) {
+void set_rgb_led_logged(int led, unsigned char r, unsigned char g, unsigned char b) {
    fprintf(fp, "-set-RGB-LED %i: %i %i %i \n", led, r, g, b);
 
    set_rgb_led(led, r, g, b);
