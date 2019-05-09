@@ -21,8 +21,6 @@ const uint16_t clLtRed   = 0x8000;
 const uint16_t font_height = 16;
 const uint16_t font_width = 8;
 
-uint16_t test_colors[8] = {clWhite, clRed, clGreen, clBlue, clBlack, clLtRed, clLtGreen, clSky};
-
 typedef struct {
     uint16_t color_led_1;
     uint16_t color_led_2;
@@ -73,6 +71,17 @@ void fill_rect_map(int x, int y, int w, int h, uint16_t color) {
 }
 
 void fill_test_map() {
+
+    uint16_t test_colors[8];
+    test_colors[0] = clWhite;
+    test_colors[1] = clRed;
+    test_colors[2] = clGreen;
+    test_colors[3] = clBlue;
+    test_colors[4] = clBlack;
+    test_colors[5] = clLtRed;
+    test_colors[6] = clLtGreen;
+    test_colors[7] = clSky;
+
     for (int i=0; i<lcd_rows / 40; i++) {
         for (int j=0; j<lcd_cols / 40; j++) {
             fill_rect_map(j*40, i*40, 40, 40, test_colors[(i+j) % 8]);
@@ -205,6 +214,9 @@ void main_cycle() {
     int quit = 1;
     int s = 0;
     int rk, gk, bk, rb, gb, bb, pbb, pgb, prb;
+
+    rb = 0; bb = 0; gb = 0;
+    rk = 0; gk = 0; bk = 0;
 
     settings.color_led_1 = clGreen;
     settings.color_led_2 = clRed;
