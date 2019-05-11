@@ -1,3 +1,6 @@
+.idea
 *.o
+cmake-build-debug
 mzapo
 log.*
+*.txt

@@ -9,6 +9,9 @@ typedef struct {
     uint16_t color_led_2;
     uint16_t menu_screen;
     uint16_t menu_settings_leds;
+    uint8_t knob_red;
+    uint8_t knob_green;
+    uint8_t knob_blue;
 } ledSettings;
 
 ledSettings settings;
