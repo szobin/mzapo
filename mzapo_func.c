@@ -3,7 +3,10 @@
 #include <stdint.h>
 
 #include "hsv_rgb.h"
+
 #include "font_rom8x16.c"
+#include "font_prop14x16.c"
+
 #include "mzapo_lib.h"
 #include "mzapo_func.h"
 
@@ -86,7 +89,68 @@ void fill_test_map() {
     }
 }
 
-void fill_font_text(int x, int y, char *text, uint16_t font_color) {
+void fill_font_prop_text(int x, int y, char *text, uint16_t font_color) {
+    size_t l = strlen(text);
+    int ch, fw;
+    int fc = font_winFreeSystem14x16.firstchar;
+    int x_ofs = x;
+    uint16_t m, fm;
+    for (int k=0; k<l; k++) {
+        ch = text[k];
+        fw = winFreeSystem14x16_width[ch-fc];
+        for (int r = 0; r < font_height; r++) {
+            m = winFreeSystem14x16_bits[r+(ch-fc)*font_height];
+            fm = 0x8000;
+            if (m != 0)
+                for (int c = 0; c < fw; c++) {
+                    if ((m & fm) > 0 ) {
+                        lcd_map[y+r][x_ofs+c] = font_color;
+                    }
+                    fm >>= 01;
+                }
+
+        }
+        x_ofs += fw;
+    }
+}
+
+void fill_font_prop_text_x_2(int x, int y, char *text, uint16_t font_color) {
+    size_t l = strlen(text);
+    int ch, fw;
+    int fc = font_winFreeSystem14x16.firstchar;
+    int x_ofs = x;
+    uint16_t m, fm;
+    for (int k=0; k<l; k++) {
+        ch = text[k];
+        fw = winFreeSystem14x16_width[ch-fc];
+        for (int r = 0; r < font_height; r++) {
+            m = winFreeSystem14x16_bits[r+(ch-fc)*font_height];
+            if (m != 0) {
+                fm = 0x8000;
+                for (int c = 0; c < fw; c++) {
+                    if ((m & fm) > 0) {
+                        lcd_map[y + r*2][x_ofs + c * 2] = font_color;
+                        lcd_map[y + r*2][x_ofs + c * 2 + 1] = font_color;
+                    }
+                    fm >>= 01;
+                }
+                fm = 0x8000;
+                for (int c = 0; c < fw; c++) {
+                    if ((m & fm) > 0) {
+                        lcd_map[y + r*2+1][x_ofs + c * 2] = font_color;
+                        lcd_map[y + r*2+1][x_ofs + c * 2 + 1] = font_color;
+                    }
+                    fm >>= 01;
+                }
+            }
+
+        }
+        x_ofs += fw*2;
+    }
+}
+
+
+void fill_font_rom_text(int x, int y, char *text, uint16_t font_color) {
     size_t l = strlen(text);
     int ch;
     uint16_t m, fm;
@@ -120,19 +184,27 @@ char* get_mode_value() {
     }
 }
 
-void draw_lcd_map() {
+char* get_view_value() {
+    if (settings.view_x2 == 0) {
+        return "view: x1";
+    } else {
+        return "view: x2";
+    }
+}
+
+void draw_lcd_map_mode_x_1() {
     char num_str[20];
 
     fill_map(clGray);
     fill_rect_map(0, 0, 320, 32, clWhite);
-    fill_font_text(80, 10, "LED 1", clBlack);
-    fill_font_text(180, 10, "LED 2", clBlack);
+    fill_font_rom_text(80, 10, "LED 1", clBlack);
+    fill_font_rom_text(180, 10, "LED 2", clBlack);
 
-    fill_font_text(10, 40, "mode", clBlack);
-    fill_font_text(74, 40, "static", clWhite);
-    fill_font_text(174, 40, "static", clWhite);
+    fill_font_rom_text(10, 40, "mode", clBlack);
+    fill_font_rom_text(74, 40, "static", clWhite);
+    fill_font_rom_text(174, 40, "static", clWhite);
 
-    fill_font_text(11, 71, "color", clBlack);
+    fill_font_rom_text(11, 71, "color", clBlack);
 
     fill_rect_map(83, 68, 24,24, clWhite);
     fill_rect_map(85, 70, 20,20, settings.color_led_1);
@@ -147,56 +219,59 @@ void draw_lcd_map() {
 
     switch (settings.menu_screen) {
         case id_menu_screen_main:
-            fill_font_text(330, 8, "MAIN MENU", clBlack);
+            fill_font_rom_text(330, 8, "MAIN MENU", clBlack);
 
             fill_rect_map(330, 44, 8, 8, clBlue);
-            fill_font_text(342, 40, "settings", clWhite);
-
-            fill_rect_map(330, 64, 8, 8, clRed);
-            fill_font_text(342, 60, "quit", clWhite);
-            break;
-        case id_menu_screen_settings:
-            fill_font_text(330, 8, "SETTINGS", clBlack);
-
-            fill_rect_map(330, 44, 8, 8, clBlue);
-            fill_font_text(342, 40, "set color", clWhite);
+            fill_font_rom_text(342, 40, "settings", clWhite);
 
             fill_rect_map(330, 64, 8, 8, clGreen);
-            fill_font_text(342, 60, get_mode_value(), clWhite);
+            fill_font_rom_text(342, 60, get_view_value(), clWhite);
 
             fill_rect_map(330, 84, 8, 8, clRed);
-            fill_font_text(342, 80, "back", clWhite);
+            fill_font_rom_text(342, 80, "quit", clWhite);
+            break;
+        case id_menu_screen_settings:
+            fill_font_rom_text(330, 8, "SETTINGS", clBlack);
+
+            fill_rect_map(330, 44, 8, 8, clBlue);
+            fill_font_rom_text(342, 40, "set color", clWhite);
+
+            fill_rect_map(330, 64, 8, 8, clGreen);
+            fill_font_rom_text(342, 60, get_mode_value(), clWhite);
+
+            fill_rect_map(330, 84, 8, 8, clRed);
+            fill_font_rom_text(342, 80, "back", clWhite);
             break;
         case id_menu_screen_set_led_color:
-            fill_font_text(330, 8, "SET LED COLOR", clBlack);
+            fill_font_rom_text(330, 8, "SET LED COLOR", clBlack);
 
             fill_rect_map(330, 44, 8, 8, clRed);
-            fill_font_text(342, 40, "back", clWhite);
+            fill_font_rom_text(342, 40, "back", clWhite);
 
-            fill_font_text(342, 60, get_mode_value(), clWhite);
+            fill_font_rom_text(342, 60, get_mode_value(), clWhite);
 
             sprintf(num_str, "%d", settings.knob_red);
             fill_rect_map(330, 94, 8, 8, clRed);
             fill_rect_map(333, 92, 2, 12, clRed);
-            fill_font_text(342, 90, "hue", clWhite);
-            fill_font_text(380, 90, num_str, clWhite);
+            fill_font_rom_text(342, 90, "hue", clWhite);
+            fill_font_rom_text(380, 90, num_str, clWhite);
 
             sprintf(num_str, "%d", settings.knob_green);
             fill_rect_map(330, 114, 8, 8, clGreen);
             fill_rect_map(333, 112, 2, 12, clGreen);
-            fill_font_text(342, 110, "sat", clWhite);
-            fill_font_text(380, 110, num_str, clWhite);
+            fill_font_rom_text(342, 110, "sat", clWhite);
+            fill_font_rom_text(380, 110, num_str, clWhite);
 
             sprintf(num_str, "%d", settings.knob_blue);
             fill_rect_map(330, 134, 8, 8, clBlue);
             fill_rect_map(333, 132, 2, 12, clBlue);
-            fill_font_text(342, 130, "val", clWhite);
-            fill_font_text(380, 130, num_str, clWhite);
+            fill_font_rom_text(342, 130, "val", clWhite);
+            fill_font_rom_text(380, 130, num_str, clWhite);
 
             struct HSV hsv = {settings.knob_red, settings.knob_green, settings.knob_blue};
             struct RGB rgb = HSVToRGB(hsv);
             sprintf(num_str, "RGB: %d %d %d", rgb.R, rgb.G, rgb.B);
-            fill_font_text(342, 160, num_str, clWhite);
+            fill_font_rom_text(342, 160, num_str, clWhite);
 
             break;
 
@@ -206,6 +281,105 @@ void draw_lcd_map() {
     draw_lcd();
 }
 
+void draw_lcd_map_mode_x_2() {
+    char num_str[20];
+
+    fill_map(clGray);
+    fill_rect_map(0, 0, 320, 36, clWhite);
+    fill_font_prop_text_x_2(90, 2, "LED 1", clBlack);
+    fill_font_prop_text_x_2(190, 2, "LED 2", clBlack);
+
+    fill_font_prop_text_x_2(6, 50, "mode", clBlack);
+    fill_font_prop_text_x_2(88, 50, "static", clWhite);
+    fill_font_prop_text_x_2(188, 50, "static", clWhite);
+
+    fill_font_prop_text_x_2(6, 101, "color", clBlack);
+
+    fill_rect_map(96, 98, 44, 44, clWhite);
+    fill_rect_map(98, 100, 40, 40, settings.color_led_1);
+
+    fill_rect_map(198, 98, 44,44, clWhite);
+    fill_rect_map(200, 100, 40,40, settings.color_led_2);
+
+    fill_rect_map(290, 32, 190, 320, clBlack);
+    fill_rect_map(290, 0, 190, 36, clGray);
+
+    switch (settings.menu_screen) {
+        case id_menu_screen_main:
+            fill_font_prop_text_x_2(300, 2, "MAIN MENU", clBlack);
+
+            fill_rect_map(302, 59, 16, 16, clBlue);
+            fill_font_prop_text_x_2(322, 50, "settings", clWhite);
+
+            fill_rect_map(302, 99, 16, 16, clGreen);
+            fill_font_prop_text_x_2(322, 90, get_view_value(), clWhite);
+
+            fill_rect_map(302, 139, 16, 16, clRed);
+            fill_font_prop_text_x_2(322, 130, "quit", clWhite);
+            break;
+        case id_menu_screen_settings:
+            fill_font_prop_text_x_2(300, 2, "SETTINGS", clBlack);
+
+            fill_rect_map(302, 59, 16, 16, clBlue);
+            fill_font_prop_text_x_2(322, 50, "set color", clWhite);
+
+            fill_rect_map(302, 99, 16, 16, clGreen);
+            fill_font_prop_text_x_2(322, 90, get_mode_value(), clWhite);
+
+            fill_rect_map(302, 139, 16, 16, clRed);
+            fill_font_prop_text_x_2(322, 130, "back", clWhite);
+            break;
+        case id_menu_screen_set_led_color:
+            fill_font_prop_text_x_2(300, 2, "SET COLOR", clBlack);
+
+            fill_rect_map(302, 59, 16, 16, clRed);
+            fill_font_prop_text_x_2(322, 50, "back", clWhite);
+
+            fill_font_prop_text_x_2(322, 90, get_mode_value(), clWhite);
+
+            sprintf(num_str, "%d", settings.knob_red);
+            fill_rect_map(302, 140, 16, 16, clRed);
+            fill_rect_map(308, 136, 4, 24, clRed);
+            fill_font_prop_text_x_2(322, 130, "hue", clWhite);
+            fill_font_prop_text_x_2(380, 130, num_str, clWhite);
+
+            sprintf(num_str, "%d", settings.knob_green);
+            fill_rect_map(302, 180, 16, 16, clGreen);
+            fill_rect_map(308, 176, 4, 24, clGreen);
+            fill_font_prop_text_x_2(322, 170, "sat", clWhite);
+            fill_font_prop_text_x_2(380, 170, num_str, clWhite);
+
+            sprintf(num_str, "%d", settings.knob_blue);
+            fill_rect_map(302, 220, 16, 16, clBlue);
+            fill_rect_map(308, 216, 4, 24, clBlue);
+            fill_font_prop_text_x_2(322, 210, "val", clWhite);
+            fill_font_prop_text_x_2(380, 210, num_str, clWhite);
+
+            struct HSV hsv = {settings.knob_red, settings.knob_green, settings.knob_blue};
+            struct RGB rgb = HSVToRGB(hsv);
+            sprintf(num_str, "RGB: %d %d %d", rgb.R, rgb.G, rgb.B);
+            fill_font_prop_text_x_2(342, 250, "RBG", clWhite);
+
+            sprintf(num_str, "%d %d %d", rgb.R, rgb.G, rgb.B);
+            fill_font_prop_text_x_2(322, 286, num_str, clWhite);
+
+            break;
+
+        default:
+            ;
+    }
+    draw_lcd();
+}
+
+void draw_lcd_map() {
+    if (settings.view_x2 == 0) {
+        draw_lcd_map_mode_x_1();
+    } else {
+        draw_lcd_map_mode_x_2();
+    }
+}
+
+
 void draw_start_lcd_map() {
     // fill_map(clBlue);
 
@@ -214,21 +388,16 @@ void draw_start_lcd_map() {
     delay(500);
 
     fill_map(clSky);
-    fill_font_text(150, 140, "LOADING...", clRed);
+    fill_font_prop_text(150, 140, "LOADING...", clRed);
     draw_lcd();
     delay(500);
 
     draw_lcd_map();
-
-    //fill_font_text(10, 10, "TEST SCREEN", clBlack);
-    //fill_font_text(20, 40, "<<RED>>", clRed);
-    //fill_font_text(20, 60, "<<GREEN>>", clGreen);
-    //fill_font_text(20, 80, "<<BLUE>>", clBlue);
 }
 
 void draw_stop_lcd_map() {
     fill_map(clSky);
-    fill_font_text(150, 140, "...FINISH", clRed);
+    fill_font_prop_text(150, 140, "...FINISH", clRed);
     draw_lcd();
 }
 
@@ -294,6 +463,7 @@ void main_cycle() {
     settings.color_led_2 = clRed;
     settings.menu_screen = 0;
     settings.menu_settings_leds = 0; // both
+    settings.view_x2 = 0; // off
 
     draw_start_lcd_map();
     set_led_settings();
@@ -344,6 +514,18 @@ void main_cycle() {
                     quit = 0;
                     break;
                 }
+
+                if (gb > 0) { // menu: view x1 / x2
+                    fprintf(fp, "menu: view\n");
+                    if (settings.view_x2 == 0) {
+                        settings.view_x2 = 1;
+                    } else {
+                        settings.view_x2 = 0;
+                    }
+                    draw_lcd_map();
+                    break;
+                }
+
                 if (bb > 0) { // menu: settings
                     fprintf(fp, "menu: settings\n");
                     settings.menu_screen = id_menu_screen_settings;
