@@ -1,4 +1,5 @@
 .idea
+*.ini
 *.o
 cmake-build-debug
 mzapo

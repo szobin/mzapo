@@ -12,6 +12,7 @@ typedef struct {
     uint8_t knob_red;
     uint8_t knob_green;
     uint8_t knob_blue;
+    uint8_t view_x2;
 } ledSettings;
 
 ledSettings settings;
