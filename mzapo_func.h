@@ -5,6 +5,7 @@
 #include <stdint.h>
 
 typedef struct {
+    uint16_t color_led_both;
     uint16_t color_led_1;
     uint16_t color_led_2;
     uint16_t menu_screen;
