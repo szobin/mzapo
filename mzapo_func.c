@@ -206,11 +206,19 @@ void draw_lcd_map_mode_x_1() {
 
     fill_font_rom_text(11, 71, "color", clBlack);
 
-    fill_rect_map(83, 68, 24,24, clWhite);
-    fill_rect_map(85, 70, 20,20, settings.color_led_1);
+    if (settings.menu_settings_leds == 0) {
+      fill_rect_map(83, 68, 24,24, clWhite);
+      fill_rect_map(85, 70, 20,20, settings.color_led_both);
 
-    fill_rect_map(183, 68, 24,24, clWhite);
-    fill_rect_map(185, 70, 20,20, settings.color_led_2);
+      fill_rect_map(183, 68, 24,24, clWhite);
+      fill_rect_map(185, 70, 20,20, settings.color_led_both);
+    } else {
+      fill_rect_map(83, 68, 24,24, clWhite);
+      fill_rect_map(85, 70, 20,20, settings.color_led_1);
+
+      fill_rect_map(183, 68, 24,24, clWhite);
+      fill_rect_map(185, 70, 20,20, settings.color_led_2);
+    }
 
 
     fill_rect_map(320, 32, 160, 320, clBlack);
@@ -295,11 +303,19 @@ void draw_lcd_map_mode_x_2() {
 
     fill_font_prop_text_x_2(6, 101, "color", clBlack);
 
-    fill_rect_map(96, 98, 44, 44, clWhite);
-    fill_rect_map(98, 100, 40, 40, settings.color_led_1);
+    if (settings.menu_settings_leds == 0) {
+      fill_rect_map(96, 98, 44, 44, clWhite);
+      fill_rect_map(98, 100, 40, 40, settings.color_led_both);
 
-    fill_rect_map(198, 98, 44,44, clWhite);
-    fill_rect_map(200, 100, 40,40, settings.color_led_2);
+      fill_rect_map(198, 98, 44,44, clWhite);
+      fill_rect_map(200, 100, 40,40, settings.color_led_both);
+    } else {
+      fill_rect_map(96, 98, 44, 44, clWhite);
+      fill_rect_map(98, 100, 40, 40, settings.color_led_1);
+
+      fill_rect_map(198, 98, 44,44, clWhite);
+      fill_rect_map(200, 100, 40,40, settings.color_led_2);
+    }   
 
     fill_rect_map(290, 32, 190, 320, clBlack);
     fill_rect_map(290, 0, 190, 36, clGray);
@@ -408,14 +424,25 @@ void set_rgb_led_logged(int led, unsigned char r, unsigned char g, unsigned char
 }
 
 void set_led_settings() {
-    set_rgb_led_logged(1,
+    if (settings.menu_settings_leds == 0) {
+      set_rgb_led_logged(1,
+            get_led_red(settings.color_led_both),
+            get_led_green(settings.color_led_both),
+            get_led_blue(settings.color_led_both));
+      set_rgb_led_logged(2,
+            get_led_red(settings.color_led_both),
+            get_led_green(settings.color_led_both),
+            get_led_blue(settings.color_led_both));
+    } else {
+      set_rgb_led_logged(1,
             get_led_red(settings.color_led_1),
             get_led_green(settings.color_led_1),
             get_led_blue(settings.color_led_1));
-    set_rgb_led_logged(2,
+      set_rgb_led_logged(2,
             get_led_red(settings.color_led_2),
             get_led_green(settings.color_led_2),
             get_led_blue(settings.color_led_2));
+    }
 }
 
 void update_led_color_settings(int h, int s, int v) {
@@ -429,8 +456,7 @@ void update_led_color_settings(int h, int s, int v) {
 
     switch (settings.menu_settings_leds) {
         case 0:
-            settings.color_led_1 = get_led_color(rgb.R, rgb.G, rgb.B);
-            settings.color_led_2 = get_led_color(rgb.R, rgb.G, rgb.B);
+            settings.color_led_both = get_led_color(rgb.R, rgb.G, rgb.B);
             draw_lcd_map();
             set_led_settings();
             break;
@@ -459,6 +485,7 @@ void main_cycle() {
     rb = 0; bb = 0; gb = 0;
     rk = 0; gk = 0; bk = 0;
 
+    settings.color_led_both = clBlue;
     settings.color_led_1 = clGreen;
     settings.color_led_2 = clRed;
     settings.menu_screen = 0;
